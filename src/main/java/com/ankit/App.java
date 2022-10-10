@@ -2,8 +2,9 @@ package com.ankit;
 
 import java.net.Authenticator;
 import java.util.Properties;
-
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 
 /**
  * Hello world!
@@ -35,13 +36,31 @@ public class App
 		properties.put("mail.smtp.auth","True");
 		
 		Session session=Session.getInstance(properties, new Authenticator() {
-		@override
+		@Override
 		protected passwordAuthentication getPasswordAuthentication() {
-			
+			return new PasswordAuthentication("abc@gmail.com","*****");
+		}
+		});
+	
+		session.setDebug(true);
+	
+		MimeMessage m=new MimeMessage(session);
+		try {
+			m.setFrom(from);
+			m.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+			m.setSubject(subject);
+			m.setText(message);
+			//step3
+			Transport.send(m);
+			System.out.println("sent success............");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
 		}
 		}
 		
 	}
 
-	}
+	
 
